@@ -1,0 +1,194 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.6'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id("com.apollographql.apollo").version("2.5.14")
+    id("com.github.node-gradle.node") version "7.0.1"
+}
+
+group = 'oc-maintenance'
+version = ''
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    maxHeapSize = '1G'
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources', 'src/main/frontend/maintenance_react/src/pages', 'src/main/frontend/maintenance_react/build']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-graphql'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.projectlombok:lombok:1.18.26'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework:spring-webflux'
+    testImplementation 'org.springframework.graphql:spring-graphql-test'
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
+    implementation group: 'org.json', name: 'json', version: '20230618'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+    //edges
+    implementation 'net.databinder:dispatch-http_2.8.1:0.8.10'
+    implementation("com.apollographql.apollo:apollo-runtime:2.5.14")
+    implementation 'org.apache.httpcomponents:httpclient:4.5.14'
+    implementation 'org.apache.httpcomponents:fluent-hc:4.5.14'
+    //websocket
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.projectlombok:lombok'
+    testImplementation 'org.apache.httpcomponents:httpclient'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //testing
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+
+task generateGitProperties {
+    doLast {
+        try {
+            def branch = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
+            def revision = 'git rev-list --max-count 1 --timestamp HEAD'.execute().text.trim()
+            def commitHash = revision.split(' ').last()
+            def timestamp = revision ? new java.util.Date(java.util.concurrent.TimeUnit.SECONDS.toMillis(revision.split(' ').first() as long)).format("yyyy-MM-dd'T'HH:mm:ssZ") : null
+            File resourcesDir = new File(project.getProjectDir(), 'src/main/resources/static')
+            File propertiesFile = new File(resourcesDir, 'git.properties')
+            if(timestamp) {
+                // The project may not have any resources, so create the directories and file
+                if(!propertiesFile.exists()) {
+                    resourcesDir.mkdirs()
+                    propertiesFile.createNewFile()
+                }
+                def date = new Date()
+                def ver = date.format('yy')
+                def ver2 = date.format('MM')
+                def ver3 = date.format('dd')
+                propertiesFile.text = """git.branch=${branch}
+        git.commit.id=${commitHash}
+        git.commit.time=${timestamp}
+        version=${ver+"."+ver2+"."+ver3}
+                """
+            } else {
+                project.logger.error('Unable to generate Git properties file:  revision could not be retrieved from Git.')
+            }
+        } catch (e) {
+            project.logger.error('Unable to generate Git properties file.', e)
+        }
+    }
+}
+
+project.tasks.jar.dependsOn('generateGitProperties')
+
+node {
+    version = '18.16.0'
+    npmVersion = '9.8.0'
+}
+
+task fillEnvFile {
+    def contextPath = ''
+    // config.properties is the default file, unless path specified otherwise
+    //gradle build generateContextPath -PconfigFile=
+    def propertiesFilePath = project.hasProperty('configFile') ? project.configFile : '../config.properties'
+    doFirst {
+        def propertiesFile = file(propertiesFilePath)
+        if (!propertiesFile.exists()) {
+            throw new GradleException("Config file not found: $propertiesFilePath")
+        }else{
+            def properties = new Properties()
+            properties.load(new FileInputStream(propertiesFile))
+//            contextPath = properties.getProperty('server.addr', '')
+//            envFile.text = "REACT_APP_BACKEND_URL=${contextPath}"
+
+            def envFile = file('src/main/frontend/maintenance_react/.env')
+            envFile.text = '';
+            def gitPropertiesFile = file('src/main/resources/static/git.properties')
+            if (gitPropertiesFile.exists()) {
+                def gitProperties = new Properties()
+                gitProperties.load(new FileInputStream(gitPropertiesFile))
+                envFile.text += "\n" + gitProperties.entrySet().collect {
+                    def key = it.key.replace(".", "_")
+                    key = "REACT_APP_${key.toUpperCase()}"
+                    "${key}=${it.value}"
+                }.join("\n")
+            } else {
+                throw new GradleException("git.properties wasnt generated correctly, check generateGitProperties task: $propertiesFilePath")
+            }
+
+        }
+    }
+    mustRunAfter(generateGitProperties)
+}
+
+//REACT_APP_
+
+
+task cleanStatic(type: Delete) {
+    delete 'src/main/resources/static/build'
+    mustRunAfter(fillEnvFile)
+}
+import org.apache.tools.ant.taskdefs.condition.Os
+task npmBuild(type: Exec, dependsOn: 'npmInstall') {
+    String npm = 'npm';
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        npm = 'npm.cmd'
+    }
+    commandLine npm, 'run', 'build'
+    workingDir file('src/main/frontend/maintenance_react')
+    mustRunAfter(cleanStatic)
+}
+
+
+node {
+    version = '18.16.1'
+    npmVersion = '9.5.1'
+}
+
+
+task copyReactBuildToStatic(type: Copy) {
+    from new File('src/main/frontend/maintenance_react/build')
+    into 'src/main/resources/static/build'
+    include '**/*'
+
+    doLast {
+        file('src/main/resources/static/build/index.html').text = file('src/main/frontend/maintenance_react/build/index.html').text.replaceAll('href="/favicon.ico"', 'href="/maintenance/favicon.ico"')
+        file('src/main/resources/static/build/index.html').text = file('src/main/resources/static/build/index.html').text.replaceAll('href="/logo192.png"', 'href="/maintenance/logo192.png"')
+        file('src/main/resources/static/build/index.html').text = file('src/main/resources/static/build/index.html').text.replaceAll('href="/manifest.json"', 'href="/maintenance/manifest.json"')
+        file('src/main/resources/static/build/index.html').text = file('src/main/resources/static/build/index.html').text.replaceAll('src="/static/js/', 'src="/maintenance/static/js/')
+        file('src/main/resources/static/build/index.html').text = file('src/main/resources/static/build/index.html').text.replaceAll('href="/static/css/', 'href="/maintenance/static/css/')
+//        file('src/main/resources/static/build/index.html').text = file('src/main/resources/static/build/index.html').text.replaceAll('<meta charset="utf-8"/>', '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">')
+        file('src/main/resources/static/build/index.html').text = file('src/main/resources/static/build/index.html').text.replaceAll('<title>.*?</title>', '<title>dts-maintenance</title>')
+    }
+    mustRunAfter(npmBuild)
+}
+
+processResources.dependsOn copyReactBuildToStatic
+
+
+
+bootJar {
+    archiveFileName = 'oc-maintenance.jar'
+    dependsOn(generateGitProperties)
+    dependsOn(fillEnvFile)
+    dependsOn(cleanStatic)
+    dependsOn(npmBuild)
+    dependsOn(copyReactBuildToStatic)
+}

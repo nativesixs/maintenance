@@ -1,0 +1,16 @@
+query platdev($place:[ID!]!){
+    instances(filter:{node:{internalId:$place}}){
+        plat:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["plato"]}}}){
+            internalId
+        }
+        dev:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["device"]}}}){
+            internalId
+        }
+        ahs:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{attrValue:{value:["zhaseci_system"],did:"information:attribute.druh_komponenty"}}}}){
+            internalId
+        }
+        zdroj:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{attrValue:{value:["napajeci_zdroj"],did:"information:attribute.druh_komponenty"}}}}){
+            internalId
+        }
+    }
+}

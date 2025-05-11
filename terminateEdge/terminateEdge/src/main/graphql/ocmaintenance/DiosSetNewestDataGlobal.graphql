@@ -1,0 +1,135 @@
+query DiosSetNewestDataGlobal(
+    $kind: [String!]!
+    $to: ZonedDateTime!
+    $from: ZonedDateTime!
+) {
+    diosSet(
+        filter: { objectFilter: { kinds: $kind } }
+        time: {
+            single: {
+                byField: TIMESTAMP
+                from: $from
+                to: $to
+                includeFrom: true
+                includeTo: true
+            }
+        }
+    ) {
+        count
+        groupByDid {
+            set {
+                newvalues: items(
+                    ordering: { byField: TIMESTAMP, order: DESCENDING }
+                    paging: { size: 1 }
+                ) {
+                    object {
+                        id {
+                            value
+                        }
+                        internalId
+                    }
+                    did {
+                        id
+                    }
+                    value {
+                        asText
+                    }
+                }
+            }
+        }
+        oldvalues: objects {
+            items {
+                id {
+                    value
+                }
+                internalId
+                attributes {
+                    did {
+                        id
+                    }
+                    normalizedValue
+                }
+            }
+        }
+    }
+}
+
+#query DiosSetNewestDataGlobal
+#{
+#
+#    instances(filter:{node:{kind:{attrValue:{value:"dpu",did:"information:attribute.druh_komponenty"}}}},
+#        page:{size:2,offset:0}){
+#        diosObject{
+#            groupByDid{
+#                set{
+#                    items(ordering: { byField: TIMESTAMP, order: DESCENDING } paging: { size: 1}){
+#                        object{
+#                            id{
+#                                value
+#                            }
+#                        }
+#                    }
+#                }
+#            }
+#        }
+#
+#    }
+
+
+#query DiosSetNewestDataGlobal(
+#    $kind: [String!]!
+#    $format: String
+#    $to: ZonedDateTime!
+#    $from: ZonedDateTime!
+#) {
+#    diosSet(
+#        filter: {
+#            valueFilter: { keyword: { endsWith: $format } }
+#            validityFilter: { includeValid: VALID, includeDuplicated: UNIQUE }
+#            objectFilter: {  kinds: $kind }
+#        }
+#        time: {
+#            single: {
+#                byField: STARTINDEXING
+#                from: $from
+#                to: $to
+#                includeFrom: true
+#                includeTo: true
+#            }
+#        }
+#    ) {
+#        count
+#        groupByObject{
+#            set{
+#                newvalues:items(ordering: { byField: STARTINDEXING, order: DESCENDING}){
+#                    object{
+#                        id{
+#                            value
+#                        }
+#                    }
+#                    did{
+#                        id
+#                    }
+#                    value{
+#                        asText
+#                    }
+#                }
+#
+#                oldvalues:objects{
+#                    items{
+#                        id{
+#                            value
+#                        }
+#                        attributes{
+#                            did{
+#                                id
+#                            }
+#                            normalizedValue
+#                        }
+#                    }
+#                }
+#
+#            }
+#        }
+#    }
+#}

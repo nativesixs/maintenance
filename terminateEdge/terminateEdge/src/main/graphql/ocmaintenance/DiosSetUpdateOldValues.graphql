@@ -1,0 +1,69 @@
+query DiosSetUpdateOldValues(
+    # $type: [String!]
+    $ckods:[String!]!
+    $didFilterIds: [ID!]!
+    $size: Int!
+    $offset: Int!
+) {
+    instancesSet(
+        filter: {
+            node: {
+                id:{values:$ckods,did:"information:attribute.ckod"}
+                # kind: {
+                #   attrValue: {
+                #     value: $type
+                #     did: "information:attribute.druh_komponenty"
+                #   }
+                # }
+            }
+        }
+    ) {
+        count
+        items(page: { size: $size, offset: $offset }) {
+            internalId
+            id {
+                value
+            }
+            attributes(dids: $didFilterIds) {
+                did {
+                    id
+                }
+                normalizedValue
+            }
+        }
+    }
+}
+
+#query DiosSetUpdateOldValues(
+#    # $to: ZonedDateTime!
+#    # $from: ZonedDateTime!
+#    $type: [String!]
+#    $didFilterIds: [ID!]!
+#    $size: Int!
+#    $offset: Int!
+#){
+#    instances(
+#        filter: {
+#            node: {
+#                kind: {
+#                    attrValue: {
+#                        value: $type
+#                        did: "information:attribute.druh_komponenty"
+#                    }
+#                }
+#            }
+#        }
+#        page: { size: $size, offset: $offset }
+#    ) {
+#        internalId
+#        id{
+#            value
+#        }
+#        attributes (dids:$didFilterIds){
+#            did {
+#                id
+#            }
+#            normalizedValue
+#        }
+#    }
+#}

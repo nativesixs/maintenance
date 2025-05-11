@@ -1,0 +1,13 @@
+query TestQuery($filter:InstancePatternMatcher, $page:PageDelimitation){
+    instances(
+        filter: $filter
+        page: $page
+    ){
+        id{
+            value
+        }
+        element{
+            id
+        }
+    }
+}

@@ -1,0 +1,17 @@
+query GetRozvadecVyvody($ckod:[String!]!){
+    trafostanice:instancesSet(filter:{node:{id:{values:$ckod,did:"information:attribute.uplne_sjz"}}}){
+        items{
+            edgeInstance(filter:{node:{kindId:["place:place.vyvod_sekundarni_strana_trafa"]}},edge:{existsNow:{}}){
+                internalId
+                edgeEndPoint{
+                    element{
+                        id
+                    }
+                    id{
+                        value
+                    }
+                }
+            }
+        }
+    }
+}

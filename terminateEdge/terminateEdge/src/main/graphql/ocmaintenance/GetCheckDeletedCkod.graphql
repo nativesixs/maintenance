@@ -1,0 +1,21 @@
+query checkDeletedCkod($ckod:[String!]!){
+    ckod:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.ckod"}}}){
+        deleted
+        coreElement{
+            id
+        }
+    }
+    simcard:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.telefonni_cislo"}}}){
+        deleted
+        coreElement{
+            id
+        }
+    }
+    place:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.uplne_sjz"}}}){
+        deleted
+        coreElement{
+            id
+        }
+    }
+}
+

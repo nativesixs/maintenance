@@ -1,0 +1,25 @@
+query getSimEdges($ckod:[String!]!){
+    sim:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.telefonni_cislo"}}}){
+        id{
+            value
+        }
+        ipset:edgeInstance(edge:{existsNow:{},type:"active_tunnels"},filter:{node:{kind:{coreElementId:["ipset"]}}}){
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        apn:edgeInstance(edge:{existsNow:{},type:"active_wan"},filter:{node:{kind:{coreElementId:["apn"]}}}){
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        dpu:edgeInstance(edge:{existsNow:{},direction:IN,type:"contains"},filter:{node:{kind:{attrValue:{value:["dpu"],did:"information:attribute.druh_komponenty"}}}}){
+            internalId
+            direction
+            type
+            existsFrom
+        }
+    }
+}

@@ -1,0 +1,14 @@
+query GetEdgesHistoryOnInv{
+    instances(page:{size:1000,offset:0},ordering:[{order:DESCENDING,attribute: "existsFrom"}]){
+        internalId
+        edgeInstance(ordering:[{order:DESCENDING,existence:{}}]){
+            internalId
+            type
+            direction
+            edgeEndPoint{
+                internalId
+            }
+            existsFrom
+        }
+    }
+}

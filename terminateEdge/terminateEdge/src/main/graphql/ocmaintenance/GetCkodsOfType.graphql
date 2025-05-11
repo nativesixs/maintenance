@@ -1,0 +1,10 @@
+query GetCkodsOfType($type:[String!]$size: Int!$offset: Int!){
+    instancesSet(filter:{node:{attrValue:{value:$type,did:"information:attribute.druh_komponenty"}}}){
+        count
+        items(page: { size: $size, offset: $offset }){
+            id{
+                value
+            }
+        }
+    }
+}

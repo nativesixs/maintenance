@@ -1,0 +1,125 @@
+query getAllDpus($size:Int!,$offset:Int!){
+    instancesSet(filter:{node:{kind:{attrValue:{value:["dpu"],did:"information:attribute.druh_komponenty"}}}}){
+        count
+    }
+    dpu:instances(filter:{node:{kind:{attrValue:{value:["dpu"],did:"information:attribute.druh_komponenty"}}}},page:{size:$size,offset:$offset}){
+        id{
+            value
+        }
+        sim:edgeInstance(edge:{existsNow:{},direction:OUT,type:"contains"},filter:{node:{kind:{coreElementId:["simcard"]}}}){
+            internalId
+            edgeEndPoint{
+                id{
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        lvm:edgeInstance(edge:{existsNow:{},direction:IN,type:"accessible_by"},filter:{node:{kind:{attrValue:{value:["lvm"],did:"information:attribute.druh_komponenty"}}}}){
+            internalId
+            edgeEndPoint{
+                id{
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        lvm_modbus:relInstance(edge:{existsNow:{}},filter:{node:{kind:{attrValue:{value:["lvm"],did:"information:attribute.druh_komponenty"}}}}){
+            modbus:attributes(dids:["information:attribute.modbus_pozice"]){
+                normalizedValue
+            }
+        }
+        plato:edgeInstance(edge:{existsNow:{},direction:IN,type:"contains"},filter:{node:{kind:{coreElementId:["plato"]}}}){
+            internalId
+            edgeEndPoint{
+                id{
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        place:edgeInstance(edge:{existsNow:{},direction:OUT,type:"installed_at"},filter:{node:{kind:{coreElementId:["place"]}}}){
+            internalId
+            edgeEndPoint{
+                id{
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+
+    }
+}
+
+
+
+
+
+
+
+
+#query getAllDpus{
+#    dpu:instances(filter:{node:{kind:{attrValue:{value:["dpu"],did:"information:attribute.druh_komponenty"}}}}){
+#        id{
+#            value
+#        }
+#        sim:edgeInstance(edge:{existsNow:{},direction:OUT,type:"contains"},filter:{node:{kind:{coreElementId:["simcard"]}}}){
+#            internalId
+#            edgeEndPoint{
+#                id{
+#                    value
+#                }
+#            }
+#            direction
+#            type
+#            existsFrom
+#        }
+#        lvm:edgeInstance(edge:{existsNow:{},direction:IN,type:"accessible_by"},filter:{node:{kind:{attrValue:{value:["lvm"],did:"information:attribute.druh_komponenty"}}}}){
+#            internalId
+#            edgeEndPoint{
+#                id{
+#                    value
+#                }
+#            }
+#            direction
+#            type
+#            existsFrom
+#        }
+#        lvm_modbus:relInstance(edge:{existsNow:{}},filter:{node:{kind:{attrValue:{value:["lvm"],did:"information:attribute.druh_komponenty"}}}}){
+#            modbus:attributes(dids:["information:attribute.modbus_pozice"]){
+#                normalizedValue
+#            }
+#        }
+#        plato:edgeInstance(edge:{existsNow:{},direction:IN,type:"contains"},filter:{node:{kind:{coreElementId:["plato"]}}}){
+#            internalId
+#            edgeEndPoint{
+#                id{
+#                    value
+#                }
+#            }
+#            direction
+#            type
+#            existsFrom
+#        }
+#        place:edgeInstance(edge:{existsNow:{},direction:OUT,type:"installed_at"},filter:{node:{kind:{coreElementId:["place"]}}}){
+#            internalId
+#            edgeEndPoint{
+#                id{
+#                    value
+#                }
+#            }
+#            direction
+#            type
+#            existsFrom
+#        }
+#
+#    }
+#}

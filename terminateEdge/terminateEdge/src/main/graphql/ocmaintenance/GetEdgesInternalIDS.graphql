@@ -1,0 +1,50 @@
+query GetEdgesInternalIDS($ckod:[String!]!){
+    instances(filter:{node:{id:{values:$ckod,did:"information:attribute.ckod"}}}){
+        plato:relInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["plato"]}}}){
+            id{
+                value
+            }
+        }
+        platoEdges:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["plato"]}}}){
+            internalId
+        }
+
+        lvm:relInstance(edge:{existsNow:{}},filter:{node:{kind:{attrValue:{value:["lvm"],did:"information:attribute.druh_komponenty"}}}}){
+            id{
+                value
+            }
+        }
+        lvmEdges:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{attrValue:{value:["lvm"],did:"information:attribute.druh_komponenty"}}}}){
+            internalId
+        }
+
+        dpu:relInstance(edge:{existsNow:{}}filter:{node:{kind:{attrValue:{value:["dpu"],did:"information:attribute.druh_komponenty"}}}}){
+            id{
+                value
+            }
+        }
+        dpuEdges:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{attrValue:{value:["dpu"],did:"information:attribute.druh_komponenty"}}}}){
+            internalId
+        }
+
+        sim:relInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["simcard"]}}}){
+            id{
+                value
+            }
+        }
+        simEdges:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["simcard"]}}}){
+            internalId
+        }
+
+        place:relInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["place"]}}}){
+            id{
+                value
+            }
+        }
+        placeEdges:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["place"]}}}){
+            internalId
+        }
+
+    }
+}
+

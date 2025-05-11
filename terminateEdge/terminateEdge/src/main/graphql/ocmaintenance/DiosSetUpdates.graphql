@@ -1,0 +1,136 @@
+query DiosSetUpdates(
+    $to: ZonedDateTime!
+    $from: ZonedDateTime!
+    # $type: [String!]
+    $ckods:[String!]!
+    $didFilterIds: [ID!]!
+    $size: Int!
+    $offset: Int!
+) {
+    instancesSet(
+        filter: {
+            node: {
+                id:{values:$ckods,did:"information:attribute.ckod"}
+                # kind: {
+                #   attrValue: {
+                #     value: $type
+                #     did: "information:attribute.druh_komponenty"
+                #   }
+                # }
+            }
+        }
+    ) {
+        count
+        items(page: { size: $size, offset: $offset }) {
+            diosObject(
+                filter: { didFilter: { ids: $didFilterIds } }
+                time: {
+                    single: {
+                        byField: TIMESTAMP
+                        from: $from
+                        to: $to
+                        includeFrom: true
+                        includeTo: true
+                    }
+                }
+            ) {
+                groupByDid {
+                    set {
+                        newvalues: items(
+                            ordering: { byField: TIMESTAMP, order: DESCENDING }
+                            paging: { size: 1 }
+                        ) {
+                            object {
+                                id {
+                                    value
+                                }
+                                internalId
+                            }
+                            did {
+                                id
+                            }
+                            value {
+                                asText
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+#query DiosSetUpdates(
+#    $to: ZonedDateTime!
+#    $from: ZonedDateTime!
+#    $type: [String!]
+#    $didFilterIds: [ID!]!
+#    $size: Int!
+#    $offset: Int!
+#) {
+#    instancesSet(
+#        filter: {
+#            node: {
+#                kind: {
+#                    attrValue: {
+#                        value: $type
+#                        did: "information:attribute.druh_komponenty"
+#                    }
+#                }
+#            }
+#        }
+#    ) {
+#        count
+#        items(page: { size: $size, offset: $offset }) {
+#            diosObject(
+#                filter: { didFilter: { ids: $didFilterIds } }
+#                time: {
+#                    single: {
+#                        byField: TIMESTAMP
+#                        from: $from
+#                        to: $to
+#                        includeFrom: true
+#                        includeTo: true
+#                    }
+#                }
+#            ) {
+#                groupByDid {
+#                    set {
+#                        newvalues: items(
+#                            ordering: { byField: TIMESTAMP, order: DESCENDING }
+#                            paging: { size: 1 }
+#                        ) {
+#                            object {
+#                                id {
+#                                    value
+#                                }
+#                                internalId
+#                            }
+#                            did {
+#                                id
+#                            }
+#                            value {
+#                                asText
+#                            }
+#                        }
+#                    }
+#                }
+#                #                oldvalues: objects {
+#                #                    items {
+#                #                        id {
+#                #                            value
+#                #                        }
+#                #                        internalId
+#                #                        attributes(dids: $didFilterIds) {
+#                #                            did {
+#                #                                id
+#                #                            }
+#                #                            normalizedValue
+#                #                        }
+#                #                    }
+#                #                }
+#            }
+#        }
+#    }
+#}

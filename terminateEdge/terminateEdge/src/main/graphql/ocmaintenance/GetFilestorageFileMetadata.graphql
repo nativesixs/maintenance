@@ -1,0 +1,8 @@
+query GetFilestorageFileMetadata($key: String) {
+    filesSet(filter: { fileNameFilter: { equals: $key } }) {
+        items {
+            createdAt
+            metadata
+        }
+    }
+}

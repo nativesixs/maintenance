@@ -1,0 +1,535 @@
+query getDeviceEdges($ckod: [String!]!) {
+    dpu: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.ckod" } }
+        }
+    ) {
+        id {
+            value
+        }
+        sim: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "contains" }
+            filter: { node: { kind: { coreElementId: ["simcard"] } } }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        lvm: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "accessible_by" }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["lvm"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        lvm_modbus: relInstance(
+            edge: { existsNow: {} }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["lvm"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            modbus: attributes(dids: ["information:attribute.modbus_pozice"]) {
+                normalizedValue
+            }
+        }
+        plato: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "contains" }
+            filter: { node: { kind: { coreElementId: ["plato"] } } }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        place: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "installed_at" }
+            filter: { node: { kind: { coreElementId: ["place"] } } }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    plato: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.ckod" } }
+        }
+    ) {
+        id {
+            value
+        }
+        place: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "installed_at" }
+            filter: { node: { kind: { coreElementId: ["place"] } } }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        lvm: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "contains" }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["lvm"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        lvm_modbus: relInstance(
+            edge: { existsNow: {} }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["lvm"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            modbus: attributes(dids: ["information:attribute.modbus_pozice"]) {
+                normalizedValue
+            }
+        }
+        dpu: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "contains" }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["dpu"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    lvm: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.ckod" } }
+        }
+    ) {
+        internalId
+        id {
+            value
+        }
+        modbus: attributes(dids: ["information:attribute.modbus_pozice"]) {
+            normalizedValue
+        }
+        place: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "installed_at" }
+            filter: { node: { kind: { coreElementId: ["place"] } } }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        plato: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "contains" }
+            filter: { node: { kind: { coreElementId: ["plato"] } } }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+        dpu: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "accessible_by" }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["dpu"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    sim: instances(
+        filter: {
+            node: {
+                id: { values: $ckod, did: "information:attribute.telefonni_cislo" }
+            }
+        }
+    ) {
+        id {
+            value
+        }
+        ipset_tunnel: edgeInstance(
+            edge: { existsNow: {}, type: "active_tunnels" }
+            filter: { node: { kind: { coreElementId: ["ipset"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+
+        apn_wan: edgeInstance(
+            edge: { existsNow: {}, type: "active_wan" }
+            filter: { node: { kind: { coreElementId: ["apn"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+
+        ipset_test: edgeInstance(
+            edge: { existsNow: {}, type: "assigned" }
+            filter: { node: { kind: { id:["ipset:ipset.ipset_test"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        ipset_prod: edgeInstance(
+            edge: { existsNow: {}, type: "assigned" }
+            filter: { node: { kind: { id:["ipset:ipset.ipset_prod"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        apn_test: edgeInstance(
+            edge: { existsNow: {}, type: "assigned" }
+            filter: { node: { kind: { id:["apn:apn.apn_test"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        apn_prod: edgeInstance(
+            edge: { existsNow: {}, type: "assigned" }
+            filter: { node: { kind: { id:["apn:apn.apn_prod"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        dpu: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "contains" }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["dpu"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    dist_trafo: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.uplne_sjz" } }
+        }
+    ) {
+        kobka: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.kobka_vn"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        rozvadec: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.rozvadec_nn"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    rozvadec: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.uplne_sjz" } }
+        }
+    ) {
+        vyvod: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "feed_from" }
+            filter: {
+                node: { kindId: ["place:place.vyvod_sekundarni_strana_trafa"] }
+            }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        pozice_zar: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.pozice_zarizeni"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        dist_trafo: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.distribucni_trafostanice"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    pozice_zar: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.uplne_sjz" } }
+        }
+    ) {
+        rozvadec: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.rozvadec_nn"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        vyvod: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "feed_from" }
+            filter: {
+                node: { kindId: ["place:place.vyvod_sekundarni_strana_trafa"] }
+            }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    vyvod: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.uplne_sjz" } }
+        }
+    ) {
+        rozvadec: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.rozvadec_nn"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        pozice_zar: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.pozice_zarizeni"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        pozice_trafa: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.pozice_trafa"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    kobka: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.uplne_sjz" } }
+        }
+    ) {
+        dist_trafo: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.distribucni_trafostanice"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        pozice_trafa: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.pozice_trafa"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+    }
+
+    pozice_trafa: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.uplne_sjz" } }
+        }
+    ) {
+        kobka: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.kobka_vn"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        trafo: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.trafo"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        vyvod: edgeInstance(
+            edge: { existsNow: {}, direction: OUT, type: "feed_from" }
+            filter: {
+                node: { kindId: ["place:place.vyvod_sekundarni_strana_trafa"] }
+            }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+    }
+    trafo: instances(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.gisid" } }
+        }
+    ) {
+        pozice_trafa: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "feed_from" }
+            filter: { node: { kindId: ["place:place.trafo"] } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+    }
+}
+

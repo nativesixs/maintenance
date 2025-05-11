@@ -1,0 +1,9 @@
+query GetAllFilestorageFiles{
+    filesSet{
+        items{
+            key
+            createdAt
+            metadata
+        }
+    }
+}

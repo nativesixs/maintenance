@@ -1,0 +1,40 @@
+query ExistingEdgesTest($ckod1:[String!]!,$ckod2:[String!]!,$did1:ID!,$did2:ID!){
+    existingEdge:instances(filter:{node:{id:{values:$ckod1,did:$did1}}}){
+        edgeInstance(filter:{node:{id:{values:$ckod2,did:$did2}}},edge:{existsNow:{}}){
+            internalId
+        }
+    }
+    instances(filter:{node:{id:{values:$ckod1,did:$did1}}}){
+        coreElement{
+            id
+        }
+        lvm_modbus: relInstance(
+            edge: { existsNow: {} }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["lvm"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            modbus: attributes(dids: ["information:attribute.modbus_pozice"]) {
+                normalizedValue
+            }
+        }
+        edgeInstance(edge:{existsNow:{}}){
+            internalId
+            edgeEndPoint{
+                element{
+                    id
+                }
+                coreElement{
+                    id
+                }
+            }
+        }
+    }
+}

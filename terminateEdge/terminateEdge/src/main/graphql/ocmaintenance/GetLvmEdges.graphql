@@ -1,0 +1,36 @@
+query getLvmEdges($ckod:[String!]!){
+    lvm:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.ckod"}}}){
+        internalId
+        id{
+            value
+        }
+        modbus:attributes(dids:["information:attribute.modbus_pozice"]){
+            normalizedValue
+        }
+        place:edgeInstance(edge:{existsNow:{},direction:OUT,type:"installed_at"},filter:{node:{kind:{coreElementId:["place"]}}}){
+            internalId
+            direction
+            type
+            existsFrom
+            edgeEndPoint{
+                internalId
+                id{
+                    value
+                }
+            }
+        }
+        plato:edgeInstance(edge:{existsNow:{},direction:IN,type:"contains"},filter:{node:{kind:{coreElementId:["plato"]}}}){
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        dpu:edgeInstance(edge:{existsNow:{},direction:OUT,type:"accessible_by"},filter:{node:{kind:{attrValue:{value:["dpu"],did:"information:attribute.druh_komponenty"}}}}){
+            internalId
+            direction
+            type
+            existsFrom
+        }
+
+    }
+}

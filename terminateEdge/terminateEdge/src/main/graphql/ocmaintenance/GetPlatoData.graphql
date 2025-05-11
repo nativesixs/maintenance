@@ -1,0 +1,25 @@
+query getPlatoData($ckod:[String!]!){
+    edges:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.ckod"}}}){
+        edgeInstance(edge:{existsNow:{}}){
+            internalId
+            type
+        }
+        relInstance(edge:{existsNow:{}},filter:{node:{coreElementId:["simcard"]}}){
+            internalId
+            id{
+                did{
+                    id
+                }
+            }
+        }
+    }
+    place:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.ckod"}}}){
+        relInstance(filter:{node:{coreElementId:["place"]}},edge:{existsNow:{}}){
+            internalId
+            id{
+                value
+            }
+        }
+    }
+
+}

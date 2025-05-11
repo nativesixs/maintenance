@@ -1,0 +1,220 @@
+query getAllSims($size:Int!,$offset:Int!){
+    instancesSet(filter:{node:{kind:{coreElementId:["plato"]}}}){
+        count
+    }
+    sim: instances(filter: { node: { kind: { coreElementId: ["simcard"] } } },page:{size:$size,offset:$offset}) {
+        id {
+            value
+        }
+        ipset_tunnel: edgeInstance(
+            edge: { existsNow: {}, type: "active_tunnels" }
+            filter: { node: { kind: { coreElementId: ["ipset"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+
+        apn_wan: edgeInstance(
+            edge: { existsNow: {}, type: "active_wan" }
+            filter: { node: { kind: { coreElementId: ["apn"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+
+        ipset_test: edgeInstance(
+            edge: { existsNow: {}, type: "assigned" }
+            filter: { node: { kind: { id:["ipset:ipset.ipset_test"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        ipset_prod: edgeInstance(
+            edge: { existsNow: {}, type: "assigned" }
+            filter: { node: { kind: { id:["ipset:ipset.ipset_prod"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+
+        apn_test: edgeInstance(
+            edge: { existsNow: {}, type: "assigned" }
+            filter: { node: { kind: { id:["apn:apn.apn_test"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        apn_prod: edgeInstance(
+            edge: { existsNow: {}, type: "assigned" }
+            filter: { node: { kind: { id:["apn:apn.apn_prod"] } } }
+        ) {
+            internalId
+            direction
+            type
+            existsFrom
+        }
+        dpu: edgeInstance(
+            edge: { existsNow: {}, direction: IN, type: "contains" }
+            filter: {
+                node: {
+                    kind: {
+                        attrValue: {
+                            value: ["dpu"]
+                            did: "information:attribute.druh_komponenty"
+                        }
+                    }
+                }
+            }
+        ) {
+            internalId
+            edgeEndPoint {
+                id {
+                    value
+                }
+            }
+            direction
+            type
+            existsFrom
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+#query getAllSims {
+#    sim: instances(filter: { node: { kind: { coreElementId: ["simcard"] } } }) {
+#        id {
+#            value
+#        }
+#        ipset_tunnel: edgeInstance(
+#            edge: { existsNow: {}, type: "active_tunnels" }
+#            filter: { node: { kind: { coreElementId: ["ipset"] } } }
+#        ) {
+#            internalId
+#            direction
+#            type
+#            existsFrom
+#        }
+#
+#        apn_wan: edgeInstance(
+#            edge: { existsNow: {}, type: "active_wan" }
+#            filter: { node: { kind: { coreElementId: ["apn"] } } }
+#        ) {
+#            internalId
+#            direction
+#            type
+#            existsFrom
+#        }
+#
+#        ipset_test: edgeInstance(
+#            edge: { existsNow: {}, type: "assigned" }
+#            filter: { node: { kind: { id:["ipset:ipset.ipset_test"] } } }
+#        ) {
+#            internalId
+#            direction
+#            type
+#            existsFrom
+#        }
+#        ipset_prod: edgeInstance(
+#            edge: { existsNow: {}, type: "assigned" }
+#            filter: { node: { kind: { id:["ipset:ipset.ipset_prod"] } } }
+#        ) {
+#            internalId
+#            direction
+#            type
+#            existsFrom
+#        }
+#
+#        apn_test: edgeInstance(
+#            edge: { existsNow: {}, type: "assigned" }
+#            filter: { node: { kind: { id:["apn:apn.apn_test"] } } }
+#        ) {
+#            internalId
+#            direction
+#            type
+#            existsFrom
+#        }
+#        apn_prod: edgeInstance(
+#            edge: { existsNow: {}, type: "assigned" }
+#            filter: { node: { kind: { id:["apn:apn.apn_prod"] } } }
+#        ) {
+#            internalId
+#            direction
+#            type
+#            existsFrom
+#        }
+#        dpu: edgeInstance(
+#            edge: { existsNow: {}, direction: IN, type: "contains" }
+#            filter: {
+#                node: {
+#                    kind: {
+#                        attrValue: {
+#                            value: ["dpu"]
+#                            did: "information:attribute.druh_komponenty"
+#                        }
+#                    }
+#                }
+#            }
+#        ) {
+#            internalId
+#            edgeEndPoint {
+#                id {
+#                    value
+#                }
+#            }
+#            direction
+#            type
+#            existsFrom
+#        }
+#    }
+#}
+#
+#
+#
+##query getAllSims{
+##    sim:instances(filter:{node:{kind:{coreElementId:["simcard"]}}}){
+##        id{
+##            value
+##        }
+##        ipset:edgeInstance(edge:{existsNow:{},type:"active_tunnels"},filter:{node:{kind:{coreElementId:["ipset"]}}}){
+##            internalId
+##            direction
+##            type
+##            existsFrom
+##        }
+##        apn:edgeInstance(edge:{existsNow:{},type:"active_wan"},filter:{node:{kind:{coreElementId:["apn"]}}}){
+##            internalId
+##            direction
+##            type
+##            existsFrom
+##        }
+##        dpu:edgeInstance(edge:{existsNow:{},direction:IN,type:"contains"},filter:{node:{kind:{attrValue:{value:["dpu"],did:"information:attribute.druh_komponenty"}}}}){
+##            internalId
+##            edgeEndPoint{
+##                id{
+##                    value
+##                }
+##            }
+##            direction
+##            type
+##            existsFrom
+##        }
+##    }
+##}

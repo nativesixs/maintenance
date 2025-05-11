@@ -1,0 +1,12 @@
+query getEdges($ckod:[ID!]!){
+    instances(filter:{node:{internalId:$ckod}}){
+        dpuvazba:edgeInstance(edge:{existsNow:{},type:"accessible_by"}){
+            internalId
+            type
+        }
+        places:edgeInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["place"]}}}){
+            internalId
+            type
+        }
+    }
+}

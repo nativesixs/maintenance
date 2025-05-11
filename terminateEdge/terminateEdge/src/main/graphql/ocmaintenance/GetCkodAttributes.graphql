@@ -1,0 +1,18 @@
+query GetCkodAttributes($ckod: [String!]!) {
+    devices(
+        filter: {
+            node: { id: { values: $ckod, did: "information:attribute.ckod" } }
+        }
+    ) {
+        internalId
+        kind{
+            id
+        }
+        attributes {
+            normalizedValue
+            did {
+                id
+            }
+        }
+    }
+}

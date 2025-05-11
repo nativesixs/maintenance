@@ -1,0 +1,47 @@
+query GetAllAttributes($type:String!,$size:Int!,$offset:Int!) {
+    instancesSet(filter:{node:{kind:{attrValue:{value:[$type],did:"information:attribute.druh_komponenty"}}}}){
+        count
+    }
+    devices:instances(filter:{node:{kind:{attrValue:{value:[$type],did:"information:attribute.druh_komponenty"}}}},page:{size:$size,offset:$offset}){
+        id{
+            value
+        }
+        internalId
+        attributes{
+            normalizedValue
+            did{
+                id
+            }
+        }
+    }
+}
+
+#query GetAllAttributes($type:String!) {
+#    devices(
+#        filter: {
+#            node: {
+#                kind: {
+#                    attrValue: {
+#                        value: [$type]
+#                        did: "information:attribute.druh_komponenty"
+#                    }
+#                }
+#            }
+#        }
+#    )
+#    {
+#        kind {
+#            id
+#        }
+#        internalId
+#        id {
+#            value
+#        }
+#        attributes {
+#            normalizedValue
+#            did {
+#                id
+#            }
+#        }
+#    }
+#}

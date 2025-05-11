@@ -1,0 +1,9 @@
+query VerifyEdge($edge:[ID!]!){
+    instancesSet{
+        edgeInstance(edge:{internalId:$edge,existsNow:{}}){
+            internalId
+            type
+            deleted
+        }
+    }
+}

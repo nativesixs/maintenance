@@ -1,0 +1,26 @@
+query GetInstancesOfTypeToTransferDidsValue($type:[ID!],$didOne:ID!,$didTwo:ID!,$size:Int!,$offset:Int!) {
+    instancesSet(filter:{node:{coreElementId:$type}}) {
+        count
+        items(page:{size:$size,offset:$offset}){
+            internalId
+            id{
+                did{
+                    id
+                }
+                value
+            }
+            didOne: attribute(did: $didOne) {
+                did {
+                    id
+                }
+                normalizedValue
+            }
+            didTwo: attribute(did: $didTwo) {
+                did {
+                    id
+                }
+                normalizedValue
+            }
+        }
+    }
+}

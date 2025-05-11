@@ -1,0 +1,172 @@
+query GetActiveTunnelsWithIpsetProd($size:Int!,$offset:Int!){
+    instancesSet(filter:{node:{coreElementId:["simcard"]}}){#,page:{size:$size,offset:$offset}){
+        count
+        items(page:{size:$size,offset:$offset}){
+            simInternalId:internalId
+            simId:id{
+                value
+            }
+            currentApn:edgeInstance(edge:{type:"active_wan",existsNow:{}}){
+                internalId
+                edgeEndPoint{
+                    internalId
+                    id{
+                        value
+                    }
+                }
+            }
+            apn_prod: relInstance(
+                edge: { type: "assigned", existsNow: {}, direction: OUT }
+                filter: { node: { kindId: ["apn:apn.apn_prod"] } }
+            ) {
+                id {
+                    value
+                }
+                element {
+                    id
+                }
+            }
+            edgeInstance(edge:{type:"active_tunnels",existsNow:{}}){
+                edgeEndPoint{
+                    edgeInternalId:internalId
+                    id{
+                        value
+                    }
+                    element{
+                        id
+                    }
+                }
+            }
+
+        }
+        # currentApn:edgeInstance(edge:{type:"active_wan",existsNow:{}},page:{size:$size,offset:$offset}){
+        #     internalId
+        #     edgeEndPoint{
+        #         internalId
+        #         id{
+        #             value
+        #         }
+        #     }
+        # }
+        # apn_prod: relInstance(
+        #     edge: { type: "assigned", existsNow: {}, direction: OUT }
+        #     filter: { node: { kindId: ["apn:apn.apn_prod"] } },page:{size:$size,offset:$offset}
+        # ) {
+        #     id {
+        #         value
+        #     }
+        #     element {
+        #         id
+        #     }
+        # }
+        # edgeInstance(edge:{type:"active_tunnels",existsNow:{}},page:{size:$size,offset:$offset}){
+        #     edgeEndPoint{
+        #         edgeInternalId:internalId
+        #         id{
+        #             value
+        #         }
+        #         element{
+        #             id
+        #         }
+        #     }
+        # }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+#query GetActiveTunnelsWithIpsetProd($size:Int!,$offset:Int!){
+#    instances(filter:{node:{coreElementId:["simcard"]}},page:{size:$size,offset:$offset}){
+#        simInternalId:internalId
+#        simId:id{
+#            value
+#        }
+#        currentApn:edgeInstance(edge:{type:"active_wan",existsNow:{}}){
+#            internalId
+#            edgeEndPoint{
+#                internalId
+#                id{
+#                    value
+#                }
+#            }
+#        }
+#        apn_prod: relInstance(
+#            edge: { type: "assigned", existsNow: {}, direction: OUT }
+#            filter: { node: { kindId: ["apn:apn.apn_prod"] } }
+#        ) {
+#            id {
+#                value
+#            }
+#            element {
+#                id
+#            }
+#        }
+#        edgeInstance(edge:{type:"active_tunnels",existsNow:{}}){
+#            edgeEndPoint{
+#                edgeInternalId:internalId
+#                id{
+#                    value
+#                }
+#                element{
+#                    id
+#                }
+#            }
+#        }
+#    }
+#}
+
+
+
+
+
+
+
+
+
+#query GetActiveTunnelsWithIpsetProd{
+#    instances(filter:{node:{coreElementId:["simcard"]}}){
+#        simInternalId:internalId
+#        simId:id{
+#            value
+#        }
+#        currentApn:edgeInstance(edge:{type:"active_wan",existsNow:{}}){
+#            internalId
+#            edgeEndPoint{
+#                internalId
+#                id{
+#                    value
+#                }
+#            }
+#        }
+#        apn_prod: relInstance(
+#            edge: { type: "assigned", existsNow: {}, direction: OUT }
+#            filter: { node: { kindId: ["apn:apn.apn_prod"] } }
+#        ) {
+#            id {
+#                value
+#            }
+#            element {
+#                id
+#            }
+#        }
+#        edgeInstance(edge:{type:"active_tunnels",existsNow:{}}){
+#            edgeEndPoint{
+#                edgeInternalId:internalId
+#                id{
+#                    value
+#                }
+#                element{
+#                    id
+#                }
+#            }
+#        }
+#    }
+#}

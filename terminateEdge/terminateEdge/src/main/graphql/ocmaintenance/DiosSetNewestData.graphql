@@ -1,0 +1,96 @@
+query DiosSetNewestData(
+    $internalId: [ID!]
+    $kind: [String!]!
+    $to: ZonedDateTime!
+    $from: ZonedDateTime!
+) {
+    diosSet(
+        filter: {
+            objectFilter: { ids: $internalId, kinds: $kind }
+        }
+        time: {
+            single: {
+                byField: TIMESTAMP
+                from: $from
+                to: $to
+                includeFrom: true
+                includeTo: true
+            }
+        }
+    ) {
+        count
+        groupByDid {
+            set {
+                items(
+                    ordering: { byField: TIMESTAMP, order: DESCENDING }
+                    paging: { size: 1 }
+                ) {
+                    object {
+                        id {
+                            value
+                        }
+                    }
+                    did {
+                        id
+                    }
+                    value {
+                        asText
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+#query DiosSetNewestData(
+#    $internalId: [ID!]
+#    $did: [ID!]
+#    $kind: [String!]!
+#    $format: String
+#    $to: ZonedDateTime!
+#    $from: ZonedDateTime!
+#) {
+#    diosSet(
+#        filter: {
+#            valueFilter: { keyword: { endsWith: $format } }
+#            validityFilter: { includeValid: VALID, includeDuplicated: UNIQUE }
+#            objectFilter: { ids: $internalId, kinds: $kind }
+#            didFilter: { ids: $did }
+#        }
+#        time: {
+#            single: {
+#                byField: STARTINDEXING
+#                from: $from
+#                to: $to
+#                includeFrom: true
+#                includeTo: true
+#            }
+#        }
+#    ) {
+#        count
+#        items(
+#            ordering: { byField: STARTINDEXING, order: DESCENDING }
+#            paging: { size: 1 }
+#        ) {
+#            object {
+#                id {
+#                    value
+#                }
+#            }
+#            did {
+#                id
+#            }
+#            value {
+#                asText
+#            }
+#        }
+#    }
+#}
+

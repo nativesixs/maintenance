@@ -1,0 +1,22 @@
+query GetActiveApnIpset($simckod:[String!]!){
+    instances(filter:{node:{id:{values:$simckod,did:"information:attribute.telefonni_cislo"}}}){
+        ipset:edgeInstance(edge:{type:"active_tunnels",existsNow:{}}){
+            internalId
+            edgeEndPoint{
+                internalId
+                id{
+                    value
+                }
+            }
+        }
+        apn:edgeInstance(edge:{type:"active_wan",existsNow:{}}){
+            internalId
+            edgeEndPoint{
+                internalId
+                id{
+                    value
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,74 @@
+query GetAssignedObjectsIpsApn($simckod: [String!]!) {
+    instances(
+        filter: {
+            node: {
+                id: { values: $simckod, did: "information:attribute.telefonni_cislo" }
+            }
+        }
+    ) {
+        edgeInstance(edge: { type: "assigned", existsNow: {} }) {
+            internalId
+            type
+            direction
+            existsFrom
+            existsTo
+            edgeEndPoint{
+                element{
+                    id
+                }
+                internalId
+                id{
+                    value
+                }
+            }
+        }
+
+        ipset_test: relInstance(
+            edge: { type: "assigned", existsNow: {}, direction: OUT }
+            filter: { node: { kindId: ["ipset:ipset.ipset_test"] } }
+        ) {
+            id {
+                value
+            }
+            element {
+                id
+            }
+        }
+
+        ipset_prod: relInstance(
+            edge: { type: "assigned", existsNow: {}, direction: OUT }
+            filter: { node: { kindId: ["ipset:ipset.ipset_prod"] } }
+        ) {
+            id {
+                value
+            }
+            element {
+                id
+            }
+        }
+
+        apn_test: relInstance(
+            edge: { type: "assigned", existsNow: {}, direction: OUT }
+            filter: { node: { kindId: ["apn:apn.apn_test"] } }
+        ) {
+            id {
+                value
+            }
+            element {
+                id
+            }
+        }
+
+        apn_prod: relInstance(
+            edge: { type: "assigned", existsNow: {}, direction: OUT }
+            filter: { node: { kindId: ["apn:apn.apn_prod"] } }
+        ) {
+            id {
+                value
+            }
+            element {
+                id
+            }
+        }
+    }
+}

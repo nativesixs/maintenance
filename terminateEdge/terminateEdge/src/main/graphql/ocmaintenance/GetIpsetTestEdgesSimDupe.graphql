@@ -1,0 +1,87 @@
+
+query GetIpsetTestEdgesSimDupe($size:Int!,$offset:Int!,$ipsetKind:[ID!],$ipsetKind2:[ID!]){
+    instancesSet(filter: {
+        OR: [
+            {node: {kindId: $ipsetKind}},
+            {node: {kindId: $ipsetKind2}}
+        ]
+    }) {
+        count
+        items(page:{size:$size,offset:$offset}){
+            ipsetId:internalId
+            id{
+                value
+            }
+            edgeInstance{
+                edgeId:internalId
+                type
+                edgeEndPoint{
+                    simId:internalId
+                    id{
+                        value
+                        did{
+                            id
+                        }
+                    }
+                    coreElement{
+                        id
+                    }
+                }
+            }
+            snmp:attribute(did:"information:information_technology.network.protocols.ipset.ip_adresa_snmp_tunelu"){
+                normalizedValue
+            }
+            dlms:attribute(did:"information:information_technology.network.protocols.ipset.ip_adresa_dlms_tunelu"){
+                normalizedValue
+            }
+            iec104:attribute(did:"information:information_technology.network.protocols.ipset.ip_adresa_iec104_tunelu"){
+                normalizedValue
+            }
+            amm:attribute(did:"information:information_technology.network.protocols.ipset.ip_adresa_amm_tunelu"){
+                normalizedValue
+            }
+        }
+    }
+}
+
+
+
+#query GetIpsetTestEdgesSimDupe($size:Int!,$offset:Int!){
+#    instancesSet(filter:{node:{kindId:["ipset:ipset.ipset_test"]}}){
+#        count
+#        items(page:{size:$size,offset:$offset}){
+#            ipsetId:internalId
+#            id{
+#                value
+#            }
+#            edgeInstance{
+#                edgeId:internalId
+#                type
+#                edgeEndPoint{
+#                    simId:internalId
+#                    id{
+#                        value
+#                        did{
+#                            id
+#                        }
+#                    }
+#                    coreElement{
+#                        id
+#                    }
+#                }
+#            }
+#            snmp:attribute(did:"information:information_technology.network.protocols.ipset.ip_adresa_snmp_tunelu"){
+#                normalizedValue
+#            }
+#            dlms:attribute(did:"information:information_technology.network.protocols.ipset.ip_adresa_dlms_tunelu"){
+#                normalizedValue
+#            }
+#            iec104:attribute(did:"information:information_technology.network.protocols.ipset.ip_adresa_iec104_tunelu"){
+#                normalizedValue
+#            }
+#            amm:attribute(did:"information:information_technology.network.protocols.ipset.ip_adresa_amm_tunelu"){
+#                normalizedValue
+#            }
+#        }
+#    }
+#}

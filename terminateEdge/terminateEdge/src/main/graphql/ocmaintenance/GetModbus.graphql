@@ -1,0 +1,8 @@
+query getModbus($ckod:[String!]!){
+    instances(filter:{node:{id:{values:$ckod,did:"information:attribute.ckod"}}}){
+        internalId
+        modbus:attributes(dids:["information:attribute.modbus_pozice"]){
+            normalizedValue
+        }
+    }
+}

@@ -1,0 +1,13 @@
+query testdavkovani($size:Int!,$offset:Int!){
+    instancesSet(filter:{node:{coreElementId:["simcard"]}}){
+        count
+        items(page:{size:$size,offset:$offset}){
+            id{
+                value
+                did{
+                    id
+                }
+            }
+        }
+    }
+}

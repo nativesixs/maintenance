@@ -1,0 +1,25 @@
+query getsimdata($ckod:[String!]!){
+    sim_tunnel:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.telefonni_cislo"}}}){
+        relInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["ipset"]}}}){
+            internalId
+            id{
+                did{
+                    id
+                }
+                value
+            }
+        }
+    }
+    sim_on_dpu:instances(filter:{node:{id:{values:$ckod,did:"information:attribute.ckod"}}}){
+        relInstance(edge:{existsNow:{}},filter:{node:{kind:{coreElementId:["simcard"]}}}){
+            internalId
+            id{
+                did{
+                    id
+                }
+                value
+            }
+        }
+    }
+
+}

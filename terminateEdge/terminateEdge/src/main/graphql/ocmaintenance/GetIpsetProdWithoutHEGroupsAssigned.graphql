@@ -1,0 +1,124 @@
+query GetIpsetProdWithoutHEGroupsAssigned($size: Int!, $offset: Int!) {
+    instancesSet(
+        filter: {
+            AND: [
+                { node: { kindId: ["ipset:ipset.ipset_prod"] } }
+                {
+                    NOT: {
+                        rels: {
+                            traversal: {
+                                edge: { type: "assigned", direction: OUT, existsNow: {} }
+                            }
+                            toInstance: { node: { kindId: ["he_group:he_group"] } }
+                        }
+                    }
+                }
+            ]
+        }
+
+
+    ) {
+        count
+        items(page:{size:$size,offset:$offset}){
+            ipsetId: internalId
+            id {
+                value
+            }
+        }
+    }
+}
+
+
+#query GetIpsetProdWithoutHEGroupsAssigned($size: Int!, $offset: Int!) {
+#    instances(
+#        filter: {
+#            AND: [
+#                { node: { kindId: ["ipset:ipset.ipset_prod"] } }
+#                {
+#                    NOT: {
+#                        rels: {
+#                            traversal: {
+#                                edge: { type: "assigned", direction: OUT, existsNow: {} }
+#                            }
+#                            toInstance: { node: { kindId: ["he_group:he_group"] } }
+#                        }
+#                    }
+#                }
+#            ]
+#        }
+#
+#        page: { size: $size, offset: $offset }
+#    ) {
+#        ipsetId: internalId
+#        id {
+#            value
+#        }
+#        # edgeInstance(edge: { existsNow: {} }) {
+#        #   internalId
+#        # }
+#    }
+#}
+
+
+
+
+
+
+#query GetIpsetProdWithoutHEGroupsAssigned($size:Int!,$offset:Int!){
+#    instances(filter:{node:{kindId:["ipset:ipset.ipset_prod"]}},page:{size:$size,offset:$offset}){
+#        ipsetId:internalId
+#        id{
+#            value
+#        }
+#        edgeInstance(edge:{existsNow:{}},filter:{node:{NOT:{coreElementId:["he_group"]}}}){
+#            internalId
+#            # edgeEndPoint{
+#            #   hegroupInternalId:internalId
+#            #   id{
+#            #     value
+#            #     did{
+#            #       id
+#            #     }
+#            #   }
+#            # }
+#        }
+#
+#        # hegroup:attribute(did:"information:information_technology.network.he_group.name"){
+#        #   hegroupname:normalizedValue
+#        # }
+#    }
+#}
+
+
+
+
+
+
+
+
+
+
+#query GetIpsetProdWithoutHEGroupsAssigned{
+#    instances(filter:{node:{kindId:["ipset:ipset.ipset_prod"]}}){
+#        ipsetId:internalId
+#        id{
+#            value
+#        }
+#        edgeInstance(edge:{existsNow:{}},filter:{node:{NOT:{coreElementId:["he_group"]}}}){
+#            internalId
+#            # edgeEndPoint{
+#            #   hegroupInternalId:internalId
+#            #   id{
+#            #     value
+#            #     did{
+#            #       id
+#            #     }
+#            #   }
+#            # }
+#        }
+#
+#        # hegroup:attribute(did:"information:information_technology.network.he_group.name"){
+#        #   hegroupname:normalizedValue
+#        # }
+#    }
+#}

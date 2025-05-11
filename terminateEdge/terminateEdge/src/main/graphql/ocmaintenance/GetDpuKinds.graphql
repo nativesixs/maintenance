@@ -1,0 +1,5 @@
+query getDeviceKinds($type:String!){
+    deviceKinds(filter:{attrValue:{value:[$type],did:"information:attribute.druh_komponenty"}}){
+        id
+    }
+}

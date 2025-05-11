@@ -1,0 +1,5 @@
+query VerifyDidExists($did:[ID!]){
+    dids(filter:{dids:$did}){
+        id
+    }
+}
